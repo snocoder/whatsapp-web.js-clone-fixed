@@ -121,6 +121,9 @@ class Client extends EventEmitter {
                 browserArgs.push(`--user-agent=${this.options.userAgent}`);
             }
 
+            // AK change
+            browserArgs.push("--no-sandbox");
+
             browser = await puppeteer.launch({
                 ...puppeteerOpts,
                 args: browserArgs,
