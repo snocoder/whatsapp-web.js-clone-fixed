@@ -128,17 +128,30 @@ class Client extends EventEmitter {
             // AK change
             browserArgs.push("--no-sandbox");
 
+            try {
+                console.log("tmp double slash", `${tmp}\\.local-chromium`);
+                console.log("tmp single slash", `${tmp}\.local-chromium`);
+            } catch (err) {
+                console.log("My error ", err);
+            }
+
             const exec = await download({
-                revision: 1160321,
-                installPath: `${tmp}/.local-chromium`,
+                revision: 1000027,
+                installPath: `${tmp}\\.local-chromium`,
             });
+
+            console.log("exec log", exec);
 
             browser = await puppeteer.launch({
                 ...puppeteerOpts,
                 args: browserArgs,
                 executablePath: exec,
             });
+
+            console.log("browser log", browser);
             page = (await browser.pages())[0];
+
+            console.log("page log", page);
         }
 
         if (this.options.proxyAuthentication !== undefined) {
