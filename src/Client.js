@@ -33,6 +33,10 @@ const {
 const LegacySessionAuth = require("./authStrategies/LegacySessionAuth");
 const NoAuth = require("./authStrategies/NoAuth");
 
+const download = require("download-chromium");
+const os = require("os");
+const tmp = os.tmpdir();
+
 /**
  * Starting point for interacting with the WhatsApp Web API
  * @extends {EventEmitter}
@@ -124,9 +128,15 @@ class Client extends EventEmitter {
             // AK change
             browserArgs.push("--no-sandbox");
 
+            const exec = await download({
+                revision: 1160321,
+                installPath: `${tmp}/.local-chromium`,
+            });
+
             browser = await puppeteer.launch({
                 ...puppeteerOpts,
                 args: browserArgs,
+                executablePath: exec,
             });
             page = (await browser.pages())[0];
         }
